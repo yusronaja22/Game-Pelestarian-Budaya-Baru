@@ -13,6 +13,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Orientation Prompt Overlay -->
+    <div id="orientation-prompt">
+        <div class="orientation-content">
+            <div class="phone-icon"></div>
+            <h2>Harap Putar Perangkat Anda</h2>
+            <p>Game ini dimainkan dalam mode Lanskap.</p>
+        </div>
+    </div>
+
     <!-- Intro Screen (Tampilan Awal) -->
     <div id="intro-screen" class="intro-screen">
         <h1 class="intro-title" data-text="SIAP BERMAIN?">SIAP BERMAIN?</h1>
@@ -232,11 +241,23 @@
         const globalTopBar = document.getElementById('global-top-bar');
 
         enterGameBtn.addEventListener('click', () => {
-            // Memaksa Fullscreen
+            // Memaksa Fullscreen dan Orientasi Landscape
+            const tryLockOrientation = () => {
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(err => {
+                        console.log(`Orientation lock failed: ${err.message}`);
+                    });
+                }
+            };
+
             if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(err => {
+                document.documentElement.requestFullscreen().then(() => {
+                    tryLockOrientation();
+                }).catch(err => {
                     console.log(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
                 });
+            } else {
+                tryLockOrientation();
             }
             
             // Tampilkan halaman utama dan top-bar
@@ -268,6 +289,25 @@
 
         // Hentikan VO dan pindah layar saat tombol MULAI diklik
         startGameBtn.addEventListener('click', () => {
+            // Memaksa Fullscreen dan Orientasi Landscape saat tombol Mulai ditekan (sebagai backup)
+            const tryLockOrientation = () => {
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(err => {
+                        console.log(`Orientation lock failed: ${err.message}`);
+                    });
+                }
+            };
+
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().then(() => {
+                    tryLockOrientation();
+                }).catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                });
+            } else {
+                tryLockOrientation();
+            }
+
             if (!voPembuka.paused) {
                 voPembuka.pause();
                 voPembuka.currentTime = 0; 
