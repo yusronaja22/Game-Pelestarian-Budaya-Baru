@@ -564,181 +564,85 @@ body {
 
 /* Responsif untuk Layar Handphone (max-width: 768px) */
 @media screen and (max-width: 768px) {
-    .intro-title {
-        font-size: 3.5rem;
-    }
+    .intro-title { font-size: 3.5rem; }
+    .intro-button { font-size: 1.5rem; padding: 12px 30px; border-width: 3px; }
     
-    .intro-button {
-        font-size: 1.5rem;
-        padding: 12px 30px;
-        border-width: 3px;
-    }
-
-    .top-bar {
-        top: 15px;
-        left: 15px;
-        right: 15px;
-    }
+    .top-bar { top: 15px; left: 15px; right: 15px; }
+    .top-left .logo { height: 45px; }
+    .icon-btn img { width: 35px; height: 35px; }
     
-    .top-left .logo {
-        height: 50px;
-    }
+    .title-image { width: 90%; margin-bottom: 15px; }
+    .carousel-box { width: 95%; }
+    .carousel-content { top: 8%; height: 80%; padding: 5px; }
+    .slide h2 { font-size: 1.5rem; margin-bottom: 5px; }
+    .slide p { font-size: 0.9rem; line-height: 1.3; }
+    .nav-button { width: 12%; }
+    .start-button { width: 200px; }
     
-    .icon-btn img {
-        width: 40px;
-        height: 40px;
-    }
+    .score-header-container { width: 85%; }
+    .score-text { font-size: 1.5rem; right: 8%; }
+    .level-indicator-text { font-size: 0.9rem; left: 6%; }
     
-    .top-right {
-        gap: 10px;
-    }
-
-    .content-wrapper {
-        width: 100%;
-        padding: 0 10px;
-    }
-
-    .title-image {
-        width: 95%;
-        margin-bottom: 15px;
-    }
-
-    .carousel-area {
-        margin-bottom: 15px;
-    }
-
-    .carousel-box {
-        width: 90%;
-    }
-
-    .slide h2 {
-        font-size: 1.8rem;
-        margin-bottom: 8px;
-    }
-
-    .slide p {
-        font-size: 1rem;
-    }
-
-    .nav-button {
-        width: 12%; 
-        min-width: 35px;
-    }
-
-    .nav-button.prev {
-        left: -5%;
-    }
-
-    .nav-button.next {
-        right: -5%;
-    }
-
-    .pagination {
-        bottom: 2%; 
-    }
+    .bagan-content-left { padding: 10px 15px; }
+    .bagan-content-right { padding: 10px; gap: 8px; }
+    .petunjuk-title { font-size: 1.3rem; }
+    .petunjuk-desc { font-size: 0.85rem; margin-top: 5px; line-height: 1.2; }
+    .draggable-card { font-size: 1.3rem; border-radius: 5px; }
     
-    .dot {
-        width: 10px;
-        height: 10px;
-    }
-
-    .start-button {
-        width: 180px; 
-    }
-    
-    .score-header-container {
-        width: 80%;
-    }
-    .score-text {
-        font-size: 1.8rem;
-    }
-    .level-indicator-text {
-        font-size: 1rem;
-    }
-    .bagan-content-left {
-        padding: 15px;
-    }
-    .petunjuk-title {
-        font-size: 1.5rem;
-    }
-    .petunjuk-desc {
-        font-size: 1rem;
-    }
-    .draggable-card {
-        font-size: 1.5rem;
-    }
-    
-    .tut-hand {
-        font-size: 2.5rem;
-    }
+    #end-screen > div { transform: scale(0.85); }
 }
 
-/* Tambahan responsif untuk layar HP yang lebih kecil (max-width: 480px) */
+/* Responsif khusus untuk layar dengan tinggi kecil (Mobile Landscape) */
+@media screen and (max-height: 600px) {
+    .intro-title { font-size: 3rem; margin-bottom: 15px; }
+    .intro-button { font-size: 1.2rem; padding: 10px 25px; }
+    
+    .top-bar { top: 10px; left: 15px; right: 15px; }
+    .top-left .logo { height: 40px; }
+    .icon-btn img { width: 35px; height: 35px; }
+    
+    .content-wrapper { padding-top: 50px; } /* Mencegah tumpang tindih dengan top bar */
+    .title-image { max-width: 350px; margin-bottom: 5px; } 
+    .carousel-box { max-width: 500px; } 
+    .carousel-area { margin-bottom: 5px; }
+    
+    .carousel-content { top: 8%; height: 80%; padding: 5px; }
+    .slide h2 { font-size: 1.2rem; margin-bottom: 2px; }
+    .slide p { font-size: 0.8rem; line-height: 1.2; }
+    
+    .start-action { margin-top: 5px; }
+    .start-button { width: 150px; }
+    
+    .petunjuk-wrapper { margin-top: 45px; }
+    .score-header-container { max-width: 450px; }
+    .bagan-container { max-width: 650px; margin: 0 auto; }
+    
+    .petunjuk-title { font-size: 1.1rem; }
+    .petunjuk-desc { font-size: 0.75rem; line-height: 1.2; margin-top: 2px; }
+    
+    #end-screen > div { transform: scale(0.7); margin-top: 30px; }
+}
+
+/* Responsif untuk layar HP yang sangat kecil (max-width: 480px) */
 @media screen and (max-width: 480px) {
-    .intro-title {
-        font-size: 2.5rem;
-    }
-
-    .intro-button {
-        font-size: 1.2rem;
-        padding: 10px 25px;
-    }
-
-    .slide h2 {
-        font-size: 1.4rem;
-    }
-
-    .slide p {
-        font-size: 0.9rem;
-    }
-
-    .top-left .logo {
-        height: 40px;
-    }
-
-    .icon-btn img {
-        width: 35px;
-        height: 35px;
-    }
-
-    .nav-button.prev {
-        left: -8%;
-    }
-
-    .nav-button.next {
-        right: -8%;
-    }
+    .intro-title { font-size: 2.2rem; }
+    .intro-button { font-size: 1rem; }
+    .top-left .logo { height: 35px; }
+    .icon-btn img { width: 30px; height: 30px; }
     
-    .start-button {
-        width: 150px;
-    }
+    .title-image { width: 95%; }
+    .slide h2 { font-size: 1.1rem; }
+    .slide p { font-size: 0.75rem; }
+    .start-button { width: 140px; }
     
-    .score-header-container {
-        width: 95%;
-    }
-    .score-text {
-        font-size: 1.4rem;
-    }
-    .level-indicator-text {
-        font-size: 0.8rem;
-    }
-    .bagan-content-left {
-        padding: 8px;
-    }
-    .petunjuk-title {
-        font-size: 1.1rem;
-    }
-    .petunjuk-desc {
-        font-size: 0.8rem;
-        margin-top: 5px;
-    }
-    .petunjuk-cards {
-        gap: 5px;
-    }
+    .score-header-container { width: 95%; }
+    .score-text { font-size: 1.2rem; }
+    .level-indicator-text { font-size: 0.75rem; }
     
-    .draggable-card {
-        font-size: 1.2rem;
-        border-radius: 6px;
-    }
+    .bagan-content-left { padding: 8px; }
+    .petunjuk-title { font-size: 1rem; }
+    .petunjuk-desc { font-size: 0.7rem; }
+    .draggable-card { font-size: 1rem; }
+    
+    #end-screen > div { transform: scale(0.7); }
 }
-

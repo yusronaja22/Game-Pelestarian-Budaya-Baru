@@ -177,8 +177,8 @@
                 <!-- Tombol Skor Akhir -->
                 <div style="position: relative; display: inline-block;">
                     <img src="Asset/image/skor-akhir.png" alt="Skor Akhir" style="width: 280px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('final-score-text').style.display='block';">
-                    <div id="final-score-text" style="display: none; position: absolute; top: 110%; left: 50%; transform: translateX(-50%); font-size: 2rem; font-family: 'Nunito', sans-serif; font-weight: 900; color: #FFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), -2px -2px 0 #1A3E31, 2px -2px 0 #1A3E31, -2px 2px 0 #1A3E31, 2px 2px 0 #1A3E31; white-space: nowrap;">
-                        SKOR: 0
+                    <div id="final-score-text" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-family: 'Nunito', sans-serif; font-weight: 900; color: #FFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), -2px -2px 0 #1A3E31, 2px -2px 0 #1A3E31, -2px 2px 0 #1A3E31, 2px 2px 0 #1A3E31; white-space: nowrap; pointer-events: none;">
+                        Skor : 0
                     </div>
                 </div>
                 
@@ -705,7 +705,7 @@
                             endScreen.style.display = 'flex';
                             
                             // Update teks skor akhir yang tersembunyi
-                            document.getElementById('final-score-text').innerText = "SKOR: " + score;
+                            document.getElementById('final-score-text').innerText = "Skor : " + score;
                             
                             setTimeout(() => {
                                 endScreen.style.opacity = '1';
