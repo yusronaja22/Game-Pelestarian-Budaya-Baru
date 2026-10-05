@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melestarikan Budaya Nasional</title>
+    
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Intro Screen (Tampilan Awal) -->
+    <div id="intro-screen" class="intro-screen">
+        <h1 class="intro-title" data-text="SIAP BERMAIN?">SIAP BERMAIN?</h1>
+        <button id="enter-game-btn" class="intro-button">MASUK KE GAME</button>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="vo-pembuka" src="Asset/audio/01 - pembuka.mp3"></audio>
+    <audio id="vo-petunjuk" src="Asset/audio/02 - petunjuk.mp3"></audio>
+    <audio id="bgm-music" src="Asset/audio/bgm_Ukulele-Swing.mp3" loop></audio>
+    <audio id="sfx-correct" src="Asset/audio/correct.mp3"></audio>
+    <audio id="sfx-wrong" src="Asset/audio/wrong.mp3"></audio>
+    <audio id="vo-aktivitas"></audio>
+
+    <!-- Top Bar for Logo and Controls (Global) -->
+    <div class="top-bar" id="global-top-bar" style="display: none;">
+        <div class="top-left">
+            <img src="Asset/image/Logo_Kemendikdasmen.svg" alt="Logo Kemendikdasmen" class="logo">
+        </div>
+        <div class="top-right">
+            <button class="icon-btn" id="music-toggle" title="Toggle Music">
+                <img src="Asset/image/unmute.png" alt="Music On" id="music-icon">
+            </button>
+            <button class="icon-btn" id="fullscreen-toggle" title="Toggle Fullscreen">
+                <img src="Asset/image/fullscreen.png" alt="Fullscreen">
+            </button>
+        </div>
+    </div>
+
+    <!-- Halaman Utama (Landing Screen) -->
+    <div class="app-container" id="landing-screen" style="display: none;">
+        <!-- Main Content -->
+        <div class="content-wrapper">
+            <!-- Title -->
+            <img src="Asset/image/judul.png" alt="Melestarikan Budaya Nasional" class="title-image">
+            
+            <!-- Carousel Area -->
+            <div class="carousel-area">
+                <!-- Navigation Left -->
+                <img src="Asset/image/back.png" alt="Previous" class="nav-button prev" id="btn-prev">
+                
+                <!-- Carousel Box -->
+                <div class="carousel-box">
+                    <img src="Asset/image/carousel.png" alt="Carousel Background" class="carousel-bg">
+                    
+                    <!-- Isi Slide -->
+                    <div class="carousel-content">
+                        <!-- Slide 1 -->
+                        <div class="slide active">
+                            <h2>Tujuan Pembelajaran</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="slide">
+                            <h2>Misi</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.</p>
+                        </div>
+                    </div>
+
+                    <!-- Dots -->
+                    <div class="pagination">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                    </div>
+                </div>
+                
+                <!-- Navigation Right -->
+                <img src="Asset/image/next.png" alt="Next" class="nav-button next" id="btn-next">
+            </div>
+
+            <!-- Start Button -->
+            <div class="start-action">
+                <img src="Asset/image/mulai.png" alt="Mulai" class="start-button" id="start-game-btn">
+            </div>
+        </div>
+    </div>
+
+    <!-- Halaman Petunjuk -->
+    <div class="app-container" id="petunjuk-screen" style="display: none;">
+        <div class="petunjuk-wrapper">
+            
+            <!-- Score Header -->
+            <div class="score-header-container">
+                <img src="Asset/image/header-skor.png" alt="Header Skor" class="score-header-bg">
+                <span class="level-indicator-text">Petunjuk Permainan</span>
+                <span class="score-text">0</span>
+            </div>
+
+            <!-- Bagan Soal / Petunjuk -->
+            <div class="bagan-container">
+                <img src="Asset/image/bagan-soal.png" alt="Bagan Soal" class="bagan-bg">
+                <div class="bagan-content-left">
+                    <h2 class="petunjuk-title">Petunjuk</h2>
+                    <p class="petunjuk-desc">Seret dan letakkan 4 kartu gambar yang paling tepat ke dalam kotak soal di sebelah kiri! Setiap kali tebakanmu benar, skor akan otomatis bertambah!</p>
+                    <div class="petunjuk-cards">
+                        <div class="ph-dropzone tut-highlight-zone" data-filled="false" id="tut-dropzone-1"></div>
+                        <div class="ph-dropzone disabled-dropzone" data-filled="false" id="tut-dropzone-2"></div>
+                        <div class="ph-dropzone disabled-dropzone" data-filled="false"></div>
+                        <div class="ph-dropzone disabled-dropzone" data-filled="false"></div>
+                    </div>
+                </div>
+                
+                <!-- Area Kartu Pilihan di sebelah Kanan -->
+                <div class="bagan-content-right" id="drag-zone-container">
+                    <div class="draggable-card green tut-highlight" draggable="true" data-correct="true" id="tut-card-1">✔</div>
+                    <div class="draggable-card red tut-dimmed" draggable="false" data-correct="false" id="tut-card-2">✖</div>
+                    <div class="draggable-card green tut-dimmed" draggable="false" data-correct="true">✔</div>
+                    <div class="draggable-card red tut-dimmed" draggable="false" data-correct="false">✖</div>
+                    <div class="draggable-card green tut-dimmed" draggable="false" data-correct="true">✔</div>
+                    <div class="draggable-card red tut-dimmed" draggable="false" data-correct="false">✖</div>
+                    <div class="draggable-card green tut-dimmed" draggable="false" data-correct="true">✔</div>
+                </div>
+                
+                <!-- Tangan Animasi Tutorial -->
+                <div id="tut-hand" class="tut-hand tut-hand-phase1">👆</div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Halaman Game Utama (6 Level) -->
+    <div class="app-container" id="game-screen" style="display: none; opacity: 0; transition: opacity 0.3s ease;">
+        <div class="petunjuk-wrapper">
+            
+            <!-- Score Header -->
+            <div class="score-header-container">
+                <img src="Asset/image/header-skor.png" alt="Header Skor" class="score-header-bg">
+                <span class="level-indicator-text" id="game-level-indicator"></span>
+                <span class="score-text" id="game-score-text">0</span>
+            </div>
+
+            <!-- Bagan Soal -->
+            <div class="bagan-container">
+                <img src="Asset/image/bagan-soal.png" alt="Bagan Soal" class="bagan-bg">
+                <div class="bagan-content-left">
+                    <p class="petunjuk-desc" id="level-question" style="margin-top: 25px;">Soal akan ditampilkan di sini...</p>
+                    <div class="petunjuk-cards" id="game-dropzones">
+                        <!-- Dropzones dimuat via JS -->
+                    </div>
+                </div>
+                
+                <!-- Area Kartu Pilihan di sebelah Kanan -->
+                <div class="bagan-content-right" id="game-dragzones">
+                    <!-- Cards dimuat via JS -->
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Halaman Akhir (End Screen) -->
+    <div class="app-container" id="end-screen" style="display: none; opacity: 0; transition: opacity 0.3s ease; justify-content: center; align-items: center; flex-direction: column; background-image: url('Asset/image/BG-2.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div style="position: relative; width: 90%; max-width: 800px; text-align: center; z-index: 10;">
+            <!-- Papan Tantangan -->
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <img src="Asset/image/tantangan-1.png" alt="Header Tantangan" style="width: 45%; max-width: 350px; z-index: 2; margin-bottom: -25px; position: relative; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));">
+                <img src="Asset/image/tantangan-2.png" alt="Tantangan Akhir" style="width: 100%; display: block; margin: 0 auto; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); z-index: 1;">
+            </div>
+            
+            <!-- Area Tombol -->
+            <div style="position: relative; margin-top: -40px; z-index: 20;">
+                <!-- Tombol Skor Akhir -->
+                <div style="position: relative; display: inline-block;">
+                    <img src="Asset/image/skor-akhir.png" alt="Skor Akhir" style="width: 280px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('final-score-text').style.display='block';">
+                    <div id="final-score-text" style="display: none; position: absolute; top: 110%; left: 50%; transform: translateX(-50%); font-size: 2rem; font-family: 'Nunito', sans-serif; font-weight: 900; color: #FFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), -2px -2px 0 #1A3E31, 2px -2px 0 #1A3E31, -2px 2px 0 #1A3E31, 2px 2px 0 #1A3E31; white-space: nowrap;">
+                        SKOR: 0
+                    </div>
+                </div>
+                
+                <!-- Tombol Reload & Close -->
+                <div style="margin-top: 25px; display: flex; justify-content: center; gap: 20px;">
+                    <img src="Asset/image/reload.png" alt="Ulangi" style="width: 60px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="location.reload()">
+                    <img src="Asset/image/close.png" alt="Tutup" style="width: 60px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'" onclick="window.close()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for Fullscreen and Music Toggle -->
+    <script>
+        // Elemen Audio & Tombol Mulai
+        const voPembuka = document.getElementById('vo-pembuka');
+        const voPetunjuk = document.getElementById('vo-petunjuk');
+        const bgmMusic = document.getElementById('bgm-music');
+        const sfxCorrect = document.getElementById('sfx-correct');
+        const sfxWrong = document.getElementById('sfx-wrong');
+        const voAktivitas = document.getElementById('vo-aktivitas');
+        const startGameBtn = document.getElementById('start-game-btn');
+
+        // Fungsi Transisi Volume Audio (Fade In/Out)
+        function fadeAudio(audio, targetVolume, duration) {
+            const step = 50; // interval ms
+            const volumeStep = (targetVolume - audio.volume) / (duration / step);
+            
+            if (audio.fadeInterval) clearInterval(audio.fadeInterval);
+            
+            audio.fadeInterval = setInterval(() => {
+                let newVolume = audio.volume + volumeStep;
+                if (newVolume > 1) newVolume = 1;
+                if (newVolume < 0) newVolume = 0;
+                
+                if ((volumeStep > 0 && newVolume >= targetVolume) || 
+                    (volumeStep < 0 && newVolume <= targetVolume)) {
+                    audio.volume = targetVolume;
+                    clearInterval(audio.fadeInterval);
+                } else {
+                    audio.volume = newVolume;
+                }
+            }, step);
+        }
+
+        // Intro Screen & Fullscreen Logic
+        const introScreen = document.getElementById('intro-screen');
+        const enterGameBtn = document.getElementById('enter-game-btn');
+        const landingScreen = document.getElementById('landing-screen');
+        const petunjukScreen = document.getElementById('petunjuk-screen');
+        const globalTopBar = document.getElementById('global-top-bar');
+
+        enterGameBtn.addEventListener('click', () => {
+            // Memaksa Fullscreen
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                });
+            }
+            
+            // Tampilkan halaman utama dan top-bar
+            landingScreen.style.display = 'flex';
+            globalTopBar.style.display = 'flex';
+            
+            // Mulai BGM dengan volume 0 (karena VO akan langsung main)
+            bgmMusic.volume = 0;
+            bgmMusic.play().catch(err => console.log("BGM play blocked/failed:", err));
+            
+            // Putar VO Pembuka
+            voPembuka.play().catch(err => console.log("Audio play blocked/failed:", err));
+            
+            // Animasi hilangnya intro screen
+            introScreen.style.opacity = '0';
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+            }, 500); // menunggu transisi selesai
+        });
+
+        // Deteksi jika VO selesai secara natural (tamat)
+        voPembuka.addEventListener('ended', () => {
+            fadeAudio(bgmMusic, 0.25, 1000);
+        });
+        
+        voPetunjuk.addEventListener('ended', () => {
+            fadeAudio(bgmMusic, 0.25, 1000); // Naikkan BGM lagi ketika VO Petunjuk selesai
+        });
+
+        // Hentikan VO dan pindah layar saat tombol MULAI diklik
+        startGameBtn.addEventListener('click', () => {
+            if (!voPembuka.paused) {
+                voPembuka.pause();
+                voPembuka.currentTime = 0; 
+            }
+            
+            // Pertahankan BGM senyap saat pindah, karena VO Petunjuk akan langsung main
+            fadeAudio(bgmMusic, 0, 300);
+            
+            console.log("Mulai game! Pindah ke layar Petunjuk.");
+            
+            // Putar VO Petunjuk
+            voPetunjuk.play().catch(err => console.log("VO Petunjuk play blocked/failed:", err));
+            
+            // Animasi perpindahan halaman
+            landingScreen.style.opacity = '0';
+            setTimeout(() => {
+                landingScreen.style.display = 'none';
+                petunjukScreen.style.display = 'flex';
+                // Trigger reflow & fade in
+                setTimeout(() => {
+                    petunjukScreen.style.opacity = '1';
+                }, 50);
+            }, 300); // 300ms transition time
+        });
+
+        // Fullscreen Toggle (Top Bar)
+        const fullscreenBtn = document.getElementById('fullscreen-toggle');
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        // Carousel Logic
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                dots[i].classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                    dots[i].classList.add('active');
+                }
+            });
+        }
+
+        btnPrev.addEventListener('click', () => {
+            currentSlide = (currentSlide > 0) ? currentSlide - 1 : slides.length - 1;
+            showSlide(currentSlide);
+        });
+
+        btnNext.addEventListener('click', () => {
+            currentSlide = (currentSlide < slides.length - 1) ? currentSlide + 1 : 0;
+            showSlide(currentSlide);
+        });
+
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                currentSlide = parseInt(e.target.getAttribute('data-index'));
+                showSlide(currentSlide);
+            });
+        });
+
+        // ==========================================
+        // Logika Drag and Drop Kartu & Tutorial
+        // ==========================================
+        const cardsDrag = document.querySelectorAll('.draggable-card');
+        const dropzones = document.querySelectorAll('.ph-dropzone');
+        const scoreText = document.querySelector('.score-text');
+        const petunjukDesc = document.querySelector('.petunjuk-desc');
+        let score = 0;
+        let draggedCard = null;
+        let draggedFromZone = null;
+        let tutorialPhase = 1; // 1: Paksa Hijau, 2: Paksa Merah, 0: Bebas
+
+        cardsDrag.forEach(card => {
+            card.addEventListener('dragstart', function(e) {
+                if (this.getAttribute('draggable') === 'false') {
+                    e.preventDefault();
+                    return;
+                }
+                draggedCard = this;
+                draggedFromZone = this.parentElement;
+                setTimeout(() => this.style.opacity = '0.5', 0);
+            });
+            card.addEventListener('dragend', function() {
+                if (!draggedCard) return;
+                draggedCard = null;
+                draggedFromZone = null;
+                this.style.opacity = '1';
+            });
+        });
+
+        dropzones.forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                if (!zone.classList.contains('disabled-dropzone')) {
+                    e.preventDefault(); 
+                }
+            });
+            zone.addEventListener('dragenter', function(e) {
+                if (this.classList.contains('disabled-dropzone')) return;
+                e.preventDefault();
+                if (this.getAttribute('data-filled') === 'false') {
+                    this.classList.add('drag-over');
+                }
+            });
+            zone.addEventListener('dragleave', function() {
+                this.classList.remove('drag-over');
+            });
+            zone.addEventListener('drop', function() {
+                if (this.classList.contains('disabled-dropzone')) return;
+                this.classList.remove('drag-over');
+                
+                // Jika area ini kosong dan ada kartu yang diseret
+                if (this.getAttribute('data-filled') === 'false' && draggedCard) {
+                    
+                    if (draggedCard.getAttribute('data-correct') === 'true') {
+                        // KARTU BENAR
+                        this.appendChild(draggedCard);
+                        this.setAttribute('data-filled', 'true');
+                        
+                        if (draggedFromZone && draggedFromZone.classList.contains('ph-dropzone')) {
+                            draggedFromZone.setAttribute('data-filled', 'false');
+                        }
+                        
+                        score += 25; 
+                        scoreText.innerText = score;
+                        
+                        sfxCorrect.currentTime = 0;
+                        sfxCorrect.play().catch(err => console.log(err));
+
+                        // Fase 1 selesai (Berhasil memindahkan hijau)
+                        if (tutorialPhase === 1 && draggedCard.id === 'tut-card-1') {
+                            tutorialPhase = 2; // Lanjut paksa merah
+                            draggedCard.classList.remove('tut-highlight');
+                            this.classList.remove('tut-highlight-zone');
+                            
+                            // Siapkan Kartu Merah (Fase 2)
+                            const tutCard2 = document.getElementById('tut-card-2');
+                            const tutZone2 = document.getElementById('tut-dropzone-2');
+                            const hand = document.getElementById('tut-hand');
+                            
+                            tutCard2.classList.remove('tut-dimmed');
+                            tutCard2.setAttribute('draggable', 'true');
+                            tutCard2.classList.add('tut-highlight');
+                            
+                            tutZone2.classList.remove('disabled-dropzone');
+                            tutZone2.classList.add('tut-highlight-zone');
+                            
+                            if(hand) {
+                                hand.classList.remove('tut-hand-phase1');
+                                hand.classList.add('tut-hand-phase2');
+                            }
+                            
+                            petunjukDesc.innerText = "Bagus! Sekarang, coba paksa letakkan kartu merah (silang) ke dalam kotak untuk melihat akibatnya jika salah!";
+                            petunjukDesc.style.color = "#D32F2F";
+                        } else {
+                            // Cek jika 4 kartu hijau sudah terisi semua
+                            let filledCount = 0;
+                            document.querySelectorAll('.ph-dropzone').forEach(z => {
+                                if (z.getAttribute('data-filled') === 'true') filledCount++;
+                            });
+                            
+                            if (filledCount === 4) {
+                                petunjukDesc.innerHTML = "Luar biasa! Kamu sudah siap bermain.<br><br><img src='Asset/image/mulai.png' id='lanjut-game-btn' style='cursor:pointer; width:130px; filter:drop-shadow(0 4px 6px rgba(0,0,0,0.3)); transition: transform 0.2s;' onmouseover='this.style.transform=\"scale(1.05)\"' onmouseout='this.style.transform=\"scale(1)\"'>";
+                                petunjukDesc.style.color = "#164036";
+                                petunjukDesc.style.textAlign = "center";
+                                
+                                // Tambahkan aksi untuk tombol Mulai yang baru muncul
+                                document.getElementById('lanjut-game-btn').addEventListener('click', () => {
+                                    console.log("MASUK KE LEVEL PERMAINAN...");
+                                    petunjukScreen.style.opacity = '0';
+                                    setTimeout(() => {
+                                        petunjukScreen.style.display = 'none';
+                                        document.getElementById('game-screen').style.display = 'flex';
+                                        
+                                        // Reset Skor (atau pertahankan)
+                                        score = 0;
+                                        document.getElementById('game-score-text').innerText = score;
+                                        
+                                        // Muat Level 1
+                                        currentLevel = 1;
+                                        loadLevel(currentLevel);
+                                        
+                                        setTimeout(() => {
+                                            document.getElementById('game-screen').style.opacity = '1';
+                                        }, 50);
+                                    }, 300);
+                                });
+                            }
+                        }
+                    } else {
+                        // KARTU SALAH
+                        // Kurangi skor (misal -10), pastikan tidak negatif
+                        score = Math.max(0, score - 10);
+                        scoreText.innerText = score;
+                        
+                        sfxWrong.currentTime = 0;
+                        sfxWrong.play().catch(err => console.log(err));
+                        
+                        // Tambahkan efek getar (shake). Browser akan melakukan visual 'bounce back' 
+                        // secara otomatis karena elemen DOM-nya tidak dipindahkan.
+                        draggedCard.classList.add('shake-error');
+                        setTimeout(() => {
+                            draggedCard.classList.remove('shake-error');
+                        }, 500);
+
+                        // Fase 2 Selesai (Melihat hukuman)
+                        if (tutorialPhase === 2 && draggedCard.id === 'tut-card-2') {
+                            tutorialPhase = 0; // Bebas
+                            draggedCard.classList.remove('tut-highlight');
+                            document.getElementById('tut-dropzone-2').classList.remove('tut-highlight-zone');
+                            
+                            const hand = document.getElementById('tut-hand');
+                            if(hand) hand.style.display = 'none';
+                            
+                            // Buka semua kunci
+                            document.querySelectorAll('.disabled-dropzone').forEach(dz => dz.classList.remove('disabled-dropzone'));
+                            document.querySelectorAll('.tut-dimmed').forEach(c => {
+                                c.classList.remove('tut-dimmed');
+                                c.setAttribute('draggable', 'true');
+                            });
+
+                            petunjukDesc.innerText = "Aduh, skormu terpotong karena salah! Ayo lanjutkan permainan dengan hanya menempatkan kartu hijau!";
+                            petunjukDesc.style.color = "#1A3E31";
+                        }
+                    }
+                }
+            });
+        });
+
+        // ==========================================
+        // Logika Dinamis Permainan (Level 1 - 6)
+        // ==========================================
+        let currentLevel = 1;
+        const totalLevels = 6;
+        
+        const levelFactors = [
+            "Faktor Memiliki Nilai yang Mendalam",
+            "Faktor Menjadi Identitas Daerah",
+            "Faktor Penghormatan Terhadap Leluhur",
+            "Faktor Diajarkan Secara Turun-Temurun",
+            "Faktor Digunakan dalam Kehidupan Masyarakat",
+            "Faktor Mampu Beradaptasi dengan Teknologi"
+        ];
+        
+        const levelQuestions = [
+            "Budaya tetap lestari karena menjadi ciri khas yang membedakan suatu daerah dengan daerah lain.",
+            "Budaya tetap lestari karena menjadi ciri khas yang membedakan suatu daerah dengan daerah lain.",
+            "Budaya tetap lestari karena masyarakat menghormati warisan para leluhur.",
+            "Budaya tetap lestari karena diwariskan dari generasi ke generasi.",
+            "Budaya tetap lestari karena masih digunakan dalam kehidupan sehari-hari.",
+            "Budaya tetap lestari karena mampu mengikuti perkembangan zaman."
+        ];
+
+        const levelFeedbacks = [
+            "Hebat! Nilai agama, kepercayaan, dan adat membuat budaya tetap dipertahankan masyarakat.",
+            "Tepat! Budaya yang menjadi identitas daerah biasanya terus dijaga dan dibanggakan masyarakat",
+            "Benar! Menghormati warisan leluhur membuat budaya terus dipelajari dan dilestarikan.",
+            "Tepat sekali! Pewarisan budaya membuat tradisi tidak hilang dari kehidupan masyarakat.",
+            "Hebat! Budaya yang masih digunakan akan terus hidup dalam masyarakat",
+            "Benar! Teknologi membantu budaya dikenal dan dipelajari oleh lebih banyak orang."
+        ];
+        
+        function loadLevel(level) {
+            document.getElementById('level-question').innerText = levelQuestions[level - 1];
+            document.getElementById('level-question').style.color = "#1A3E31";
+            document.getElementById('game-level-indicator').innerText = levelFactors[level - 1];
+            
+            const dropContainer = document.getElementById('game-dropzones');
+            const dragContainer = document.getElementById('game-dragzones');
+            
+            dropContainer.innerHTML = '';
+            dragContainer.innerHTML = '';
+            
+            // Buat 4 Dropzone Kosong
+            for (let i = 0; i < 4; i++) {
+                const dz = document.createElement('div');
+                dz.className = 'ph-dropzone';
+                dz.setAttribute('data-filled', 'false');
+                dropContainer.appendChild(dz);
+            }
+            
+            // Buat array index 1-7 dan acak urutannya (Fisher-Yates Shuffle)
+            let cardIndices = [1, 2, 3, 4, 5, 6, 7];
+            for (let k = cardIndices.length - 1; k > 0; k--) {
+                const j = Math.floor(Math.random() * (k + 1));
+                [cardIndices[k], cardIndices[j]] = [cardIndices[j], cardIndices[k]];
+            }
+            
+            // Buat 7 Kartu Pilihan berdasarkan urutan acak tersebut
+            for (let i of cardIndices) {
+                const card = document.createElement('div');
+                card.className = 'draggable-card';
+                card.setAttribute('draggable', 'true');
+                
+                // Sementara 1 hingga 4 (berdasarkan nama file) dianggap benar, 5 hingga 7 salah
+                card.setAttribute('data-correct', i <= 4 ? 'true' : 'false');
+                
+                // Styling gambar kartu
+                card.style.backgroundImage = `url('Asset/image/${level}-${i}.png')`;
+                card.style.backgroundSize = 'contain';
+                card.style.backgroundRepeat = 'no-repeat';
+                card.style.backgroundPosition = 'center';
+                card.style.backgroundColor = 'transparent'; // Hapus warna latar kotak
+                card.style.border = 'none';
+                card.style.boxShadow = 'none';
+                card.style.filter = 'drop-shadow(0px 3px 5px rgba(0,0,0,0.3))';
+                card.innerText = ''; // Hilangkan teks ✔/✖
+                
+                dragContainer.appendChild(card);
+            }
+            
+            bindGameDragDrop();
+        }
+
+        function bindGameDragDrop() {
+            const cards = document.querySelectorAll('#game-screen .draggable-card');
+            const dropzones = document.querySelectorAll('#game-screen .ph-dropzone');
+            const gameScoreText = document.getElementById('game-score-text');
+
+            let gDraggedCard = null;
+            let gDraggedFromZone = null;
+
+            cards.forEach(card => {
+                card.addEventListener('dragstart', function(e) {
+                    gDraggedCard = this;
+                    gDraggedFromZone = this.parentElement;
+                    setTimeout(() => this.style.opacity = '0.5', 0);
+                });
+                card.addEventListener('dragend', function() {
+                    if (!gDraggedCard) return;
+                    gDraggedCard = null;
+                    gDraggedFromZone = null;
+                    this.style.opacity = '1';
+                });
+            });
+
+            dropzones.forEach(zone => {
+                zone.addEventListener('dragover', (e) => e.preventDefault()); 
+                zone.addEventListener('dragenter', function(e) {
+                    e.preventDefault();
+                    if (this.getAttribute('data-filled') === 'false') {
+                        this.classList.add('drag-over');
+                    }
+                });
+                zone.addEventListener('dragleave', function() {
+                    this.classList.remove('drag-over');
+                });
+                zone.addEventListener('drop', function() {
+                    this.classList.remove('drag-over');
+                    
+                    if (this.getAttribute('data-filled') === 'false' && gDraggedCard) {
+                        if (gDraggedCard.getAttribute('data-correct') === 'true') {
+                            this.appendChild(gDraggedCard);
+                            this.setAttribute('data-filled', 'true');
+                            
+                            if (gDraggedFromZone && gDraggedFromZone.classList.contains('ph-dropzone')) {
+                                gDraggedFromZone.setAttribute('data-filled', 'false');
+                            }
+                            
+                            score += 10; 
+                            gameScoreText.innerText = score;
+                            
+                            sfxCorrect.currentTime = 0;
+                            sfxCorrect.play().catch(err => console.log(err));
+
+                            checkLevelCompletion();
+                        } else {
+                            score = Math.max(0, score - 10);
+                            gameScoreText.innerText = score;
+                            
+                            sfxWrong.currentTime = 0;
+                            sfxWrong.play().catch(err => console.log(err));
+                            
+                            gDraggedCard.classList.add('shake-error');
+                            setTimeout(() => {
+                                gDraggedCard.classList.remove('shake-error');
+                            }, 500);
+                        }
+                    }
+                });
+            });
+        }
+
+        function checkLevelCompletion() {
+            let filledCount = 0;
+            document.querySelectorAll('#game-screen .ph-dropzone').forEach(z => {
+                if (z.getAttribute('data-filled') === 'true') filledCount++;
+            });
+            
+            if (filledCount === 4) {
+                const desc = document.getElementById('level-question');
+                
+                // Ubah teks menjadi kalimat feedback (pembahasan) yang disamakan dengan VO
+                desc.innerHTML = "<strong>" + levelFeedbacks[currentLevel - 1] + "</strong>";
+                desc.style.color = "#388E3C";
+                
+                // Siapkan VO untuk level ini
+                voAktivitas.src = `Asset/audio/aktivitas-${currentLevel}.mp3`;
+                
+                // Bisukan BGM sejenak
+                const isMusicOn = !bgmMusic.muted;
+                if (isMusicOn) {
+                    bgmMusic.volume = 0;
+                }
+                
+                voAktivitas.play().catch(err => console.log(err));
+                
+                // Tunggu hingga VO selesai sebelum pindah level
+                voAktivitas.onended = () => {
+                    if (isMusicOn) {
+                        fadeAudio(bgmMusic, 'in'); // Kembalikan BGM
+                    }
+                    
+                    if (currentLevel < totalLevels) {
+                        currentLevel++;
+                        loadLevel(currentLevel);
+                    } else {
+                        // Tamat! Transisi ke Layar Akhir
+                        document.getElementById('game-screen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('game-screen').style.display = 'none';
+                            
+                            const endScreen = document.getElementById('end-screen');
+                            endScreen.style.display = 'flex';
+                            
+                            // Update teks skor akhir yang tersembunyi
+                            document.getElementById('final-score-text').innerText = "SKOR: " + score;
+                            
+                            setTimeout(() => {
+                                endScreen.style.opacity = '1';
+                            }, 50);
+                        }, 300);
+                    }
+                };
+            }
+        }
+
+        // ==========================================
+        // Music Toggle (Mempengaruhi VO, BGM, dan SFX)
+        // ==========================================
+        const musicBtn = document.getElementById('music-toggle');
+        const musicIcon = document.getElementById('music-icon');
+        let isMusicOn = true;
+
+        musicBtn.addEventListener('click', () => {
+            isMusicOn = !isMusicOn;
+            if (isMusicOn) {
+                musicIcon.src = 'Asset/image/unmute.png';
+                musicIcon.alt = 'Music On';
+                voPembuka.muted = false;
+                voPetunjuk.muted = false;
+                bgmMusic.muted = false;
+                sfxCorrect.muted = false;
+                sfxWrong.muted = false;
+                voAktivitas.muted = false;
+            } else {
+                musicIcon.src = 'Asset/image/mute.png';
+                musicIcon.alt = 'Music Off';
+                voPembuka.muted = true;
+                voPetunjuk.muted = true;
+                bgmMusic.muted = true;
+                sfxCorrect.muted = true;
+                sfxWrong.muted = true;
+                voAktivitas.muted = true;
+            }
+        });
+    </script>
+</body>
+</html>
