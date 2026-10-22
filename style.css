@@ -160,14 +160,14 @@ body {
     flex-direction: column;
     align-items: center;
     z-index: 10;
-    width: 90%;
-    max-width: 900px;
+    width: 95%;
+    max-width: 1350px;
 }
 
 .title-image {
-    width: 80%;
-    max-width: 650px;
-    margin-bottom: 25px;
+    width: 65%;
+    max-width: 480px;
+    margin-bottom: 8px;
     filter: drop-shadow(0px 6px 8px rgba(0,0,0,0.3));
     z-index: 2;
 }
@@ -176,15 +176,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
 .carousel-box {
     position: relative;
-    width: 85%;
-    max-width: 750px;
+    width: 80vw;
+    max-width: 1180px;
     display: flex;
     justify-content: center;
 }
@@ -199,10 +200,10 @@ body {
 /* --- Carousel Content --- */
 .carousel-content {
     position: absolute;
-    top: 10%;
-    left: 10%;
-    width: 80%;
-    height: 70%; /* Dipersempit agar tidak menyentuh border bawah yang tebal */
+    top: 8%;
+    left: 8%;
+    width: 84%;
+    height: 74%; /* Dipersempit agar tidak menyentuh border bawah yang tebal */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -294,11 +295,11 @@ body {
 
 .start-action {
     position: relative;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 
 .start-button {
-    width: 250px;
+    width: 210px;
     cursor: pointer;
     transition: transform 0.2s ease;
     filter: drop-shadow(0px 8px 6px rgba(0,0,0,0.3));
@@ -409,26 +410,30 @@ body {
     font-weight: 700;
     color: #1A3E31;
     line-height: 1.4;
-    margin-top: 10px;
-    margin-bottom: auto; /* Dorong kartu-kartu kosong ke bawah */
+    margin-top: 8px;
+    margin-bottom: 6px;
 }
 
 #level-question {
-    margin-top: 25px;
+    margin-top: 12px;
+    margin-bottom: 6px;
 }
 
 .petunjuk-cards {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 1.2vh 16px;
+    justify-content: center;
+    align-content: center;
+    margin: auto auto;
     width: 100%;
-    gap: 2%;
 }
 
 .ph-dropzone {
-    width: 100%;
-    height: auto;
-    max-width: 23%;
+    height: 16.5vh;
+    max-height: 140px;
+    min-height: 80px;
+    width: auto;
     aspect-ratio: 3 / 4;
     background-image: url('Asset/image/place-holder.png');
     background-size: 100% 100%;
@@ -438,6 +443,7 @@ body {
     align-items: center;
     border-radius: 8px;
     transition: transform 0.2s, filter 0.2s;
+    box-sizing: border-box;
 }
 
 .ph-dropzone.drag-over {
@@ -446,8 +452,8 @@ body {
 }
 
 .ph-dropzone .draggable-card {
-    width: 90%;
-    height: 90%;
+    width: 92%;
+    height: 92%;
     max-width: none;
     max-height: none;
     margin: 0;
@@ -557,22 +563,22 @@ body {
     animation: dragTut1 2.5s infinite ease-in-out;
 }
 @keyframes dragTut1 {
-    0% { top: 20%; right: 35%; transform: scale(1) rotate(-15deg); opacity: 0; }
-    10% { top: 20%; right: 35%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
-    60% { top: 60%; right: 75%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
-    80% { top: 60%; right: 75%; transform: scale(1) rotate(-15deg); opacity: 0; }
-    100% { top: 20%; right: 35%; transform: scale(1) rotate(-15deg); opacity: 0; }
+    0% { top: 22%; right: 35%; transform: scale(1) rotate(-15deg); opacity: 0; }
+    10% { top: 22%; right: 35%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
+    60% { top: 48%; right: 78%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
+    80% { top: 48%; right: 78%; transform: scale(1) rotate(-15deg); opacity: 0; }
+    100% { top: 22%; right: 35%; transform: scale(1) rotate(-15deg); opacity: 0; }
 }
 
 .tut-hand-phase2 {
     animation: dragTut2 2.5s infinite ease-in-out;
 }
 @keyframes dragTut2 {
-    0% { top: 20%; right: 25%; transform: scale(1) rotate(-15deg); opacity: 0; }
-    10% { top: 20%; right: 25%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
-    60% { top: 60%; right: 55%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
-    80% { top: 60%; right: 55%; transform: scale(1) rotate(-15deg); opacity: 0; }
-    100% { top: 20%; right: 25%; transform: scale(1) rotate(-15deg); opacity: 0; }
+    0% { top: 22%; right: 25%; transform: scale(1) rotate(-15deg); opacity: 0; }
+    10% { top: 22%; right: 25%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
+    60% { top: 48%; right: 65%; transform: scale(0.9) rotate(-15deg); opacity: 1; }
+    80% { top: 48%; right: 65%; transform: scale(1) rotate(-15deg); opacity: 0; }
+    100% { top: 22%; right: 25%; transform: scale(1) rotate(-15deg); opacity: 0; }
 }
 
 /* Responsif untuk Layar Handphone (max-width: 768px) */
@@ -600,7 +606,7 @@ body {
     .petunjuk-title { font-size: 1.3rem; }
     .petunjuk-desc { font-size: 0.85rem; margin-top: 5px; line-height: 1.2; }
     #level-question { margin-top: 10px; }
-    .ph-dropzone { max-width: 23%; }
+    .ph-dropzone { height: 16vh; max-height: 120px; }
     .draggable-card { font-size: 1.3rem; border-radius: 5px; max-width: 23%; }
     
     /* Optimasi Performa Mobile */
@@ -620,7 +626,7 @@ body {
     
     .content-wrapper { padding-top: 50px; } /* Mencegah tumpang tindih dengan top bar */
     .title-image { max-width: 350px; margin-bottom: 5px; } 
-    .carousel-box { max-width: 500px; } 
+    .carousel-box { width: 75vw; max-width: 650px; } 
     .carousel-area { margin-bottom: 5px; }
     
     .carousel-content { top: 8%; height: 80%; padding: 5px; }
@@ -633,7 +639,8 @@ body {
     .petunjuk-title { font-size: 1.1rem; }
     .petunjuk-desc { font-size: 0.85rem; line-height: 1.2; margin-top: 2px; margin-bottom: 5px; }
     #level-question { margin-top: 5px; }
-    .ph-dropzone { max-width: 23%; }
+    .ph-dropzone { height: 17vh; max-height: 105px; min-height: 70px; }
+    .petunjuk-cards { gap: 1vh 12px; }
     .draggable-card { max-width: 23%; font-size: 1.2rem; }
     
     #end-screen > div { transform: scale(0.7); margin-top: 30px; }
@@ -658,7 +665,7 @@ body {
     .petunjuk-title { font-size: 1rem; }
     .petunjuk-desc { font-size: 0.7rem; }
     #level-question { margin-top: 5px; }
-    .ph-dropzone { max-width: 23%; }
+    .ph-dropzone { height: 15vh; max-height: 90px; }
     .draggable-card { font-size: 1rem; max-width: 23%; }
     
     #end-screen > div { transform: scale(0.7); }
