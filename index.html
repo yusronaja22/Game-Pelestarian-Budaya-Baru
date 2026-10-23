@@ -183,10 +183,10 @@
             
             <!-- Area Tombol -->
             <div style="position: relative; margin-top: -40px; z-index: 20;">
-                <!-- Tombol Skor Akhir -->
+                <!-- Skor Akhir -->
                 <div style="position: relative; display: inline-block;">
-                    <img src="Asset/image/skor-akhir.png" alt="Skor Akhir" style="width: 280px; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="document.getElementById('final-score-text').style.display='block';">
-                    <div id="final-score-text" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-family: 'Nunito', sans-serif; font-weight: 900; color: #FFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), -2px -2px 0 #1A3E31, 2px -2px 0 #1A3E31, -2px 2px 0 #1A3E31, 2px 2px 0 #1A3E31; white-space: nowrap; pointer-events: none;">
+                    <img src="Asset/image/skor-akhir.png" alt="Skor Akhir" style="width: 280px; transition: transform 0.2s; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));">
+                    <div id="final-score-text" style="display: block; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; font-family: 'Nunito', sans-serif; font-weight: 900; color: #FFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.6), -2px -2px 0 #1A3E31, 2px -2px 0 #1A3E31, -2px 2px 0 #1A3E31, 2px 2px 0 #1A3E31; white-space: nowrap; pointer-events: none;">
                         Skor : 0
                     </div>
                 </div>
@@ -600,14 +600,28 @@
                 dropContainer.appendChild(dz);
             }
             
-            // Buat array index 1-7 dan acak urutannya (Fisher-Yates Shuffle)
-            let cardIndices = [1, 2, 3, 4, 5, 6, 7];
+            // Jumlah kartu berdasarkan aset per level:
+            // Level 1: 6 kartu, Level 2-5: 7 kartu, Level 6: 8 kartu
+            const levelCardCounts = { 1: 6, 2: 7, 3: 7, 4: 7, 5: 7, 6: 8 };
+            const cardCount = levelCardCounts[level] || 7;
+            
+            // Set class cards-6 agar ukuran kartu lebih besar (3 per baris) bila <= 6 kartu
+            dragContainer.className = 'bagan-content-right';
+            if (cardCount <= 6) {
+                dragContainer.classList.add('cards-6');
+            }
+
+            // Buat array index kartu dan acak urutannya (Fisher-Yates Shuffle)
+            let cardIndices = [];
+            for (let idx = 1; idx <= cardCount; idx++) {
+                cardIndices.push(idx);
+            }
             for (let k = cardIndices.length - 1; k > 0; k--) {
                 const j = Math.floor(Math.random() * (k + 1));
                 [cardIndices[k], cardIndices[j]] = [cardIndices[j], cardIndices[k]];
             }
             
-            // Buat 7 Kartu Pilihan berdasarkan urutan acak tersebut
+            // Buat Kartu Pilihan berdasarkan urutan acak tersebut
             for (let i of cardIndices) {
                 const card = document.createElement('div');
                 card.className = 'draggable-card';
@@ -744,7 +758,7 @@
                             const endScreen = document.getElementById('end-screen');
                             endScreen.style.display = 'flex';
                             
-                            // Update teks skor akhir yang tersembunyi
+                            // Update teks skor akhir agar langsung ditampilkan
                             document.getElementById('final-score-text').innerText = "Skor : " + score;
                             
                             setTimeout(() => {
