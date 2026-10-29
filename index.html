@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3.1">
 </head>
 <body>
     <!-- Orientation Prompt Overlay -->
@@ -667,8 +667,9 @@
         ];
         
         function loadLevel(level) {
-            document.getElementById('level-question').innerText = levelQuestions[level - 1];
-            document.getElementById('level-question').style.color = "#1A3E31";
+            const lq = document.getElementById('level-question');
+            lq.innerText = levelQuestions[level - 1];
+            lq.style.color = "#1A3E31";
             document.getElementById('game-level-indicator').innerText = levelFactors[level - 1];
             
             const dropContainer = document.getElementById('game-dropzones');
@@ -813,7 +814,7 @@
                 
                 // Ubah teks menjadi kalimat feedback (pembahasan) yang disamakan dengan VO
                 desc.innerHTML = "<strong>" + levelFeedbacks[currentLevel - 1] + "</strong>";
-                desc.style.color = "#388E3C";
+                desc.style.color = "#2E7D32";
                 
                 // Siapkan VO untuk level ini
                 voAktivitas.src = `Asset/audio/aktivitas-${currentLevel}.mp3`;

@@ -386,46 +386,51 @@ body {
 
 .bagan-content-left {
     position: absolute;
-    top: 4.5%;
-    left: 4.5%;
+    top: 9%;
+    left: 4.6%;
     width: 44%;
-    height: 89%;
-    padding: 1.2% 1.8%;
+    height: 81.8%;
+    padding: 3.5vh 2.2vw 1.5vh 2.2vw;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     box-sizing: border-box;
+    overflow: hidden; /* Memastikan deskripsi dan hint soal 100% berada dalam border putih */
 }
 
 .petunjuk-title {
-    font-size: min(2.4vw, 3.2vh);
-    font-weight: 800;
-    color: #000;
+    font-size: min(1.8vw, 2.4vh);
+    font-weight: 900;
+    color: #1A3E31;
     font-family: 'Nunito', sans-serif;
-    margin-bottom: 0;
-    line-height: 1.1;
+    margin: 0 0 0.5vh 0;
+    line-height: 1.2;
 }
 
 .petunjuk-desc {
-    font-size: min(1.5vw, 2vh);
+    font-size: min(1.15vw, 1.55vh);
     font-weight: 700;
     color: #1A3E31;
     line-height: 1.35;
-    margin-top: 0.6vh;
-    margin-bottom: 0.6vh;
+    margin: 0 0 1vh 0;
 }
 
 #level-question {
-    font-size: min(1.5vw, 2vh);
-    font-weight: 700;
+    font-size: min(1.4vw, 1.9vh);
+    font-weight: 800;
     line-height: 1.35;
-    margin-top: 0.6vh;
-    margin-bottom: 0.6vh;
+    color: #1A3E31;
+    margin: 0 0 1vh 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-sizing: border-box;
 }
 
 .petunjuk-cards {
     display: grid;
     grid-template-columns: repeat(2, auto);
-    gap: 1.2vh 1.2vw;
+    gap: 1.2vh 1.4vw;
     justify-content: center;
     align-content: center;
     margin: auto auto;
@@ -433,7 +438,7 @@ body {
 }
 
 .ph-dropzone {
-    height: min(21vh, 14.5vw);
+    height: min(20vh, 13.5vw);
     aspect-ratio: 169 / 226;
     width: auto;
     background-image: url('Asset/image/place-holder.png');
