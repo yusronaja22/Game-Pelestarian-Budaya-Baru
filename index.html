@@ -270,11 +270,6 @@
                         Nilai : 0
                     </div>
                 </div>
-                <div>
-                    <div id="final-raw-score" class="end-raw-score">
-                        Skor Mentah: 0 / 240
-                    </div>
-                </div>
                 
                 <!-- Tombol Reload & Close -->
                 <div class="end-btn-group">
@@ -296,26 +291,67 @@
         const voAktivitas = document.getElementById('vo-aktivitas');
         const startGameBtn = document.getElementById('start-game-btn');
 
+        let isMusicOn = true;
+
         // Fungsi Transisi Volume Audio (Fade In/Out)
-        function fadeAudio(audio, targetVolume, duration) {
-            const step = 50; // interval ms
-            const volumeStep = (targetVolume - audio.volume) / (duration / step);
+        function fadeAudio(audio, targetVolume, duration = 1000) {
+            if (!audio) return;
             
-            if (audio.fadeInterval) clearInterval(audio.fadeInterval);
+            // Mendukung shortcut string 'in' / 'out'
+            if (targetVolume === 'in') {
+                targetVolume = 0.25;
+            } else if (targetVolume === 'out') {
+                targetVolume = 0;
+            }
+            
+            targetVolume = Number(targetVolume);
+            if (isNaN(targetVolume)) targetVolume = 0.25;
+            targetVolume = Math.max(0, Math.min(1, targetVolume));
+            
+            duration = Number(duration) || 1000;
+            const step = 50; // interval ms
+            const stepsCount = Math.max(1, duration / step);
+            const volumeStep = (targetVolume - audio.volume) / stepsCount;
+            
+            if (audio.fadeInterval) {
+                clearInterval(audio.fadeInterval);
+                audio.fadeInterval = null;
+            }
+            
+            // Jika volume target > 0 dan audio sedang ter-pause (dan tidak dimute), pastikan berputar
+            if (targetVolume > 0 && audio.paused && !audio.muted) {
+                audio.play().catch(err => console.log("Audio play resume:", err));
+            }
             
             audio.fadeInterval = setInterval(() => {
                 let newVolume = audio.volume + volumeStep;
                 if (newVolume > 1) newVolume = 1;
                 if (newVolume < 0) newVolume = 0;
                 
-                if ((volumeStep > 0 && newVolume >= targetVolume) || 
-                    (volumeStep < 0 && newVolume <= targetVolume)) {
+                if ((volumeStep >= 0 && newVolume >= targetVolume) || 
+                    (volumeStep <= 0 && newVolume <= targetVolume)) {
                     audio.volume = targetVolume;
                     clearInterval(audio.fadeInterval);
+                    audio.fadeInterval = null;
                 } else {
                     audio.volume = newVolume;
                 }
             }, step);
+        }
+
+        // Fungsi Memastikan BGM Berputar dengan Volume Normal (0.25)
+        function ensureBgmPlaying() {
+            if (!isMusicOn || bgmMusic.muted) return;
+            if (bgmMusic.paused) {
+                bgmMusic.play().catch(err => console.log("BGM play resume:", err));
+            }
+            // Kembalikan volume ke 0.25 jika tidak sedang memutar VO penjelasan
+            const isVoActive = (!voPembuka.paused && !voPembuka.ended && voPembuka.currentTime > 0) ||
+                               (!voPetunjuk.paused && !voPetunjuk.ended && voPetunjuk.currentTime > 0) ||
+                               (!voAktivitas.paused && !voAktivitas.ended && voAktivitas.currentTime > 0);
+            if (!isVoActive) {
+                fadeAudio(bgmMusic, 0.25, 500);
+            }
         }
 
         // Intro Screen & Fullscreen Logic
@@ -573,6 +609,13 @@
                                 // Tambahkan aksi untuk tombol Mulai yang baru muncul
                                 document.getElementById('lanjut-game-btn').addEventListener('click', () => {
                                     console.log("MASUK KE LEVEL PERMAINAN...");
+                                    if (!voPetunjuk.paused) {
+                                        voPetunjuk.pause();
+                                        voPetunjuk.currentTime = 0;
+                                    }
+                                    if (isMusicOn && !bgmMusic.muted) {
+                                        fadeAudio(bgmMusic, 0.25, 500);
+                                    }
                                     petunjukScreen.style.opacity = '0';
                                     setTimeout(() => {
                                         petunjukScreen.style.display = 'none';
@@ -667,6 +710,7 @@
         ];
         
         function loadLevel(level) {
+            ensureBgmPlaying();
             const lq = document.getElementById('level-question');
             lq.innerText = levelQuestions[level - 1];
             lq.style.color = "#1A3E31";
@@ -742,7 +786,10 @@
             let gDraggedFromZone = null;
 
             cards.forEach(card => {
+                // Pastikan BGM menyala melalui interaksi sentuhan / klik pemain
+                card.addEventListener('pointerdown', ensureBgmPlaying, { passive: true });
                 card.addEventListener('dragstart', function(e) {
+                    ensureBgmPlaying();
                     gDraggedCard = this;
                     gDraggedFromZone = this.parentElement;
                     setTimeout(() => this.style.opacity = '0.5', 0);
@@ -818,20 +865,17 @@
                 
                 // Siapkan VO untuk level ini
                 voAktivitas.src = `Asset/audio/aktivitas-${currentLevel}.mp3`;
+                voAktivitas.load();
                 
-                // Bisukan BGM sejenak
-                const isMusicOn = !bgmMusic.muted;
-                if (isMusicOn) {
-                    bgmMusic.volume = 0;
-                }
+                // Redupkan BGM sejenak saat VO feedback berbunyi (ducking ke 0.05 agar audio tetap aktif)
+                fadeAudio(bgmMusic, 0.05, 300);
                 
-                voAktivitas.play().catch(err => console.log(err));
-                
-                // Tunggu hingga VO selesai sebelum pindah level
-                voAktivitas.onended = () => {
-                    if (isMusicOn) {
-                        fadeAudio(bgmMusic, 'in'); // Kembalikan BGM
-                    }
+                let levelTransitioned = false;
+                const nextStep = () => {
+                    if (levelTransitioned) return;
+                    levelTransitioned = true;
+                    
+                    ensureBgmPlaying();
                     
                     if (currentLevel < totalLevels) {
                         currentLevel++;
@@ -856,26 +900,34 @@
                             
                             document.getElementById('final-score-text').innerText = "Nilai : " + formattedScore;
                             
-                            const rawScoreEl = document.getElementById('final-raw-score');
-                            if (rawScoreEl) {
-                                rawScoreEl.innerText = `Skor Mentah: ${rawScore} / 240`;
-                            }
-                            
                             setTimeout(() => {
                                 endScreen.style.opacity = '1';
                             }, 50);
                         }, 300);
                     }
                 };
+
+                voAktivitas.onended = nextStep;
+                voAktivitas.onerror = (err) => {
+                    console.warn("voAktivitas error, proceeding:", err);
+                    setTimeout(nextStep, 1500);
+                };
+
+                voAktivitas.play().catch(err => {
+                    console.warn("VO aktivitas play failed/blocked:", err);
+                    setTimeout(nextStep, 2000);
+                });
             }
         }
+
+        // Listener interaksi global pada game-screen agar BGM pasti berputar saat pemain menyentuh layar
+        document.getElementById('game-screen').addEventListener('pointerdown', ensureBgmPlaying, { passive: true });
 
         // ==========================================
         // Music Toggle (Mempengaruhi VO, BGM, dan SFX)
         // ==========================================
         const musicBtn = document.getElementById('music-toggle');
         const musicIcon = document.getElementById('music-icon');
-        let isMusicOn = true;
 
         musicBtn.addEventListener('click', () => {
             isMusicOn = !isMusicOn;
@@ -888,6 +940,7 @@
                 sfxCorrect.muted = false;
                 sfxWrong.muted = false;
                 voAktivitas.muted = false;
+                ensureBgmPlaying();
             } else {
                 musicIcon.src = 'Asset/image/mute.png';
                 musicIcon.alt = 'Music Off';
