@@ -31,6 +31,7 @@
     <!-- Audio Elements -->
     <audio id="vo-pembuka" src="Asset/audio/01 - pembuka.mp3"></audio>
     <audio id="vo-petunjuk" src="Asset/audio/02 - petunjuk.mp3"></audio>
+    <audio id="vo-penutup" src="Asset/audio/03 - penutup.mp3"></audio>
     <audio id="bgm-music" src="Asset/audio/bgm_Ukulele-Swing.mp3" loop></audio>
     <audio id="sfx-correct" src="Asset/audio/correct.mp3"></audio>
     <audio id="sfx-wrong" src="Asset/audio/wrong.mp3"></audio>
@@ -285,6 +286,7 @@
         // Elemen Audio & Tombol Mulai
         const voPembuka = document.getElementById('vo-pembuka');
         const voPetunjuk = document.getElementById('vo-petunjuk');
+        const voPenutup = document.getElementById('vo-penutup');
         const bgmMusic = document.getElementById('bgm-music');
         const sfxCorrect = document.getElementById('sfx-correct');
         const sfxWrong = document.getElementById('sfx-wrong');
@@ -348,7 +350,8 @@
             // Kembalikan volume ke 0.25 jika tidak sedang memutar VO penjelasan
             const isVoActive = (!voPembuka.paused && !voPembuka.ended && voPembuka.currentTime > 0) ||
                                (!voPetunjuk.paused && !voPetunjuk.ended && voPetunjuk.currentTime > 0) ||
-                               (!voAktivitas.paused && !voAktivitas.ended && voAktivitas.currentTime > 0);
+                               (!voAktivitas.paused && !voAktivitas.ended && voAktivitas.currentTime > 0) ||
+                               (!voPenutup.paused && !voPenutup.ended && voPenutup.currentTime > 0);
             if (!isVoActive) {
                 fadeAudio(bgmMusic, 0.25, 500);
             }
@@ -406,6 +409,10 @@
         
         voPetunjuk.addEventListener('ended', () => {
             fadeAudio(bgmMusic, 0.25, 1000); // Naikkan BGM lagi ketika VO Petunjuk selesai
+        });
+
+        voPenutup.addEventListener('ended', () => {
+            fadeAudio(bgmMusic, 0.25, 1000); // Naikkan BGM lagi ketika VO Penutup selesai
         });
 
         // Hentikan VO dan pindah layar saat tombol MULAI diklik
@@ -875,19 +882,33 @@
                     if (levelTransitioned) return;
                     levelTransitioned = true;
                     
-                    ensureBgmPlaying();
+                    if (!voAktivitas.paused) {
+                        voAktivitas.pause();
+                        voAktivitas.currentTime = 0;
+                    }
                     
                     if (currentLevel < totalLevels) {
+                        ensureBgmPlaying();
                         currentLevel++;
                         loadLevel(currentLevel);
                     } else {
                         // Tamat! Transisi ke Layar Akhir
+                        // Redupkan BGM untuk memutar VO Penutup
+                        fadeAudio(bgmMusic, 0, 300);
+                        
                         document.getElementById('game-screen').style.opacity = '0';
                         setTimeout(() => {
                             document.getElementById('game-screen').style.display = 'none';
                             
                             const endScreen = document.getElementById('end-screen');
                             endScreen.style.display = 'flex';
+                            
+                            // Putar VO Penutup di Halaman Akhir
+                            voPenutup.currentTime = 0;
+                            voPenutup.play().catch(err => {
+                                console.warn("VO penutup play blocked/failed:", err);
+                                ensureBgmPlaying();
+                            });
                             
                             // Hitung Nilai Akhir sesuai Skema: (Skor Mentah / 240) * 100
                             const rawScore = Math.max(0, score);
@@ -920,8 +941,9 @@
             }
         }
 
-        // Listener interaksi global pada game-screen agar BGM pasti berputar saat pemain menyentuh layar
+        // Listener interaksi global agar BGM pasti berputar saat pemain menyentuh layar
         document.getElementById('game-screen').addEventListener('pointerdown', ensureBgmPlaying, { passive: true });
+        document.getElementById('end-screen').addEventListener('pointerdown', ensureBgmPlaying, { passive: true });
 
         // ==========================================
         // Music Toggle (Mempengaruhi VO, BGM, dan SFX)
@@ -936,6 +958,7 @@
                 musicIcon.alt = 'Music On';
                 voPembuka.muted = false;
                 voPetunjuk.muted = false;
+                voPenutup.muted = false;
                 bgmMusic.muted = false;
                 sfxCorrect.muted = false;
                 sfxWrong.muted = false;
@@ -946,6 +969,7 @@
                 musicIcon.alt = 'Music Off';
                 voPembuka.muted = true;
                 voPetunjuk.muted = true;
+                voPenutup.muted = true;
                 bgmMusic.muted = true;
                 sfxCorrect.muted = true;
                 sfxWrong.muted = true;
